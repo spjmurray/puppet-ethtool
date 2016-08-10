@@ -84,6 +84,7 @@ describe Ethtool::Facts do
     before do
       Facter.clear
       Facter.fact(:kernel).stubs(:value).returns("Linux")
+      Ethtool::Facts.stubs(:exists?).returns(true)
       Ethtool::Facts.stubs(:interfaces).returns(['testeth'])
       Ethtool::Facts.stubs(:ethtool).returns('  Speed: 42Mb/s')
       Ethtool::Facts.facts
@@ -97,6 +98,7 @@ describe Ethtool::Facts do
     before do
       Facter.clear
       Facter.fact(:kernel).stubs(:value).returns("Linux")
+      Ethtool::Facts.stubs(:exists?).returns(true)
       Ethtool::Facts.stubs(:interfaces).returns(['testeth'])
       Ethtool::Facts.stubs(:ethtool).returns('')
       Ethtool::Facts.facts
@@ -108,8 +110,9 @@ describe Ethtool::Facts do
 
   context "On an unsupported OS" do
     before do
-      Facter.fact(:kernel).stubs(:value).returns(:windows)
+      Facter.fact(:kernel).stubs(:value).returns('windows')
       Facter.fact(:kernelrelease).stubs(:value).returns('6.1.7601')
+      Ethtool::Facts.stubs(:exists?).returns(true)
       Ethtool::Facts.stubs(:interfaces).returns(['WINDOWS_INTERFACE'])
       Ethtool::Facts.facts
     end
